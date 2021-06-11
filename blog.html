@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head class="header">
+	<meta charset="windows-1251">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<title>������� �������� �����</title>
+</head>
+<body>
+	<div class="navbar">
+	<form align="center">
+	<input  type="button" value="Вход" onclick="javascript:window.location='login.html'"/>
+	<input  type="button" value="Новая запись" onclick="javascript:window.location='newnote.php'"/>
+	<input  type="button" value="Отправить сообщение" onclick="javascript:window.location='email.php'"/>
+	<input  type="button" value="Фото" onclick="javascript:window.location='photo.php'"/>
+	<input  type="button" value="Файлы" onclick="javascript:window.location='inform.php'"/>
+	<input  type="button" value="Администратору" onclick="javascript:window.location='admin.php'"/>
+	<input  type="button" value="Информация" onclick="javascript:window.location='inform.html'"/>
+	<input  type="button" value="Выход" onclick="javascript:window.location='logout.php'"/>
+	</form>
+	</div>
+
+	<p><h1 align="center"><em>Рад приветствовать вас<br> 
+								на страницах моего сайта, посвященного путешевствиям<br> 
+								Здесь я буду рассказывать о своих путешевствиях...<br>
+								... и выкладывать разные интересные материалы!</em></h1></p>
+	</body>
+</html>
+
+
+<?PHP
+	//Поиск по одному слову
+	/*$user_search = $_GET['usersearch'];
+	if(!empty($user_search))
+	{
+		$query_usersearch = "SELECT * FROM notes
+							WHERE title LIKE '%$user_search%'
+							OR article LIKE '%$user_search%'";
+	}
+	$result_usersearch = mysqli_query($link, $query_usersearch);
+	while ($array_usersearch = mysqli_fetch_array($result_usersearch))
+	{
+		echo $array_usersearch['id'];
+		echo $array_usersearch['title'];
+		echo $array_usersearch['article'];
+	}
+	*/
+	//Поиск по фразе
+	$submit = $_GET['submit'];
+	if ($submit) {
+	$user_search = $_GET['usersearch'];
+	//$search_query = "SELECT * FROM tableName"
+	$where_list = array();
+	$query_usersearch = "SELECT * FROM notes";
+	$search_words = explode(' ', $user_search);
+
+	foreach($search_words as $word)
+	{
+		$where_list[] = " article LIKE '%$word%'";
+	}
+	$where_clause = implode (' OR ', $where_list);
+	if (!empty($where_clause))
+	{
+		$query_usersearch .=" WHERE $where_clause";
+	}
+	$res_query = mysqli_query($link, $query_usersearch);
+	while ($res_array = mysqli_fetch_array($res_query))
+		{
+			echo $res_array['id'], "<br>";
+			echo $res_array['article'], "<br>", "<hr>", "<br>";
+		}
+	}
+?>
